@@ -68,7 +68,18 @@ public class Polar implements Runnable{
 		if(isFileValid(file.getName())){
 			Map<String, String> map=ApplicationContext.map;
 			String expectedtime=map.get(file.getName());
-			Long receivedTime = file.lastModified();
+			
+			Date receivedTime = new Date(file.lastModified()); 
+			SimpleDateFormat formatter = new SimpleDateFormat("HH:mm:ss");  
+			String formattedDateString = formatter.format(receivedTime); 
+			System.out.println(formattedDateString);
+			String[] tokens1 = formattedDateString.split(":");
+			int secondsToMs1 = Integer.parseInt(tokens1[2]) * 1000;
+			int minutesToMs1 = Integer.parseInt(tokens1[1]) * 60000;
+			int hoursToMs1 = Integer.parseInt(tokens1[0]) * 3600000;
+			long total1 = secondsToMs1 + minutesToMs1 + hoursToMs1;
+			System.out.println(total1);
+
 			DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
 			Date date;
 			try {
@@ -88,8 +99,13 @@ public class Polar implements Runnable{
 
 				String time = String.format("%02d:%02d:%02d:%d", hour, minute, second, total);
 				System.out.println(time);*/
-				
-				return true;
+				Long timeDiff=total-total1;
+				if(timeDiff > 0){
+		        	System.out.println(file.getName() + " is received on time.");
+		        	return true;
+		        }else{
+		        	System.out.println(file.getName() + " is not received on time.");
+		        }
 				
 			} catch (ParseException e) {
 				e.printStackTrace();
