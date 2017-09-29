@@ -18,7 +18,7 @@ public class ApplicationContext {
 
 	    	DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
 	    	DocumentBuilder db = dbf.newDocumentBuilder();
-	    	Document document = db.parse(new File("D:/shrutiWorkspace/FileTransferProject/src/com/resource.xml"));
+	    	Document document = db.parse(new File("D:/gitRepo/FileTransferProject/src/com/resource.xml"));
 	    	NodeList nodeList = document.getElementsByTagName("input-file");
 	    	for(int x=0,size= nodeList.getLength(); x<size; x++) {
 	    	    map.put(nodeList.item(x).getAttributes().getNamedItem("name").getNodeValue(),nodeList.item(x).getAttributes().getNamedItem("time").getNodeValue());

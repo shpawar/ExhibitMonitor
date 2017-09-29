@@ -1,6 +1,7 @@
 package com;
 
 import java.io.File;
+import java.sql.Time;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -16,7 +17,7 @@ public class Polar implements Runnable{
 		
 		for (File file : listOfFiles) {
 		    if (file.isFile()) {
-		        if (!isFileOnTime(file.getName())) {//!isFileValid(filename.getName())&&isFileDuplicate(filename.getName())
+		        if (!isFileValid(file.getName()) || isFileDuplicate(file.getName()) || !isFileOnTime(file)) {
 		        	file.delete();
 				}
 		        else{
@@ -63,25 +64,36 @@ public class Polar implements Runnable{
 		return false;	
 	}
 	
-	public boolean isFileOnTime(String filename){
-		if(isFileValid(filename)){
+	public boolean isFileOnTime(File file){
+		if(isFileValid(file.getName())){
 			Map<String, String> map=ApplicationContext.map;
-			Iterator it = map.entrySet().iterator();
-		  	   while (it.hasNext()) {
-		  	    	Map.Entry pair = (Map.Entry)it.next();
-		  	    	
-		  	   }
-			String time = "15:30:18";
+			String expectedtime=map.get(file.getName());
+			Long receivedTime = file.lastModified();
 			DateFormat sdf = new SimpleDateFormat("hh:mm:ss");
 			Date date;
 			try {
-				date = sdf.parse(time);
+				date = sdf.parse(expectedtime);
+				System.out.println("Time: " + sdf.format(date));
+				String source = sdf.format(date);
+				String[] tokens = source.split(":");
+				int secondsToMs = Integer.parseInt(tokens[2]) * 1000;
+				int minutesToMs = Integer.parseInt(tokens[1]) * 60000;
+				int hoursToMs = Integer.parseInt(tokens[0]) * 3600000;
+				long total = secondsToMs + minutesToMs + hoursToMs;
+/*				System.out.println(total);
+				
+				long second = (total / 1000) % 60;
+				long minute = (total / (1000 * 60)) % 60;
+				long hour = (total / (1000 * 60 * 60)) % 24;
+
+				String time = String.format("%02d:%02d:%02d:%d", hour, minute, second, total);
+				System.out.println(time);*/
+				
+				return true;
+				
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
-			//System.out.println("Time: " + sdf.format(date));
 		}
 		return false;	
 	}
