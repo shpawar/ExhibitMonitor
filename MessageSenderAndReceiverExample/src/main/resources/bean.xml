@@ -9,33 +9,16 @@
 <context:annotation-config/>
 <context:component-scan base-package="com.demo.service"/>
 
-<int:channel id="msgChannel"/>
-<int:service-activator input-channel="msgChannel" ref="msgService" output-channel="msgChannel1">
-</int:service-activator>
 
-<int:channel id="msgChannel1"/>
-<int:service-activator input-channel="msgChannel1" ref="msgService1" >
-</int:service-activator>
-
+<int:publish-subscribe-channel id="pubSubChannel"/>
 <int:poller default="true" fixed-delay="20"/>
 <int:channel id="queueChannel">
-<int:queue capacity="100"/>
+	<int:queue capacity="100"/>
 </int:channel>
+<int:bridge input-channel="pubSubChannel" output-channel="queueChannel"/>
 <int:service-activator input-channel="queueChannel" ref="queueService">
 </int:service-activator>
 
-<int:channel id="priorityChannel">
-<int:priority-queue capacity="10" />
-</int:channel>
-<int:service-activator input-channel="priorityChannel" ref="priorityChannelService">
-</int:service-activator>
 
-<int:publish-subscribe-channel id="pubSubChannel" />
-
-<int:channel id="rendezvousChannel">
-<int:rendezvous-queue/>
-</int:channel>
-<int:service-activator input-channel="rendezvousChannel" ref="rendezvousChannelService">
-</int:service-activator>
 
 </beans>
