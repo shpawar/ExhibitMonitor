@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:int="http://www.springframework.org/schema/integration"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+		http://www.springframework.org/schema/integration http://www.springframework.org/schema/integration/spring-integration-4.0.xsd">
+
+<context:annotation-config/>
+<context:component-scan base-package="com.assign.service"/>
+
+<!-- 1. A-> channel1 -> B -> Channel2 -> C -->
+<int:channel id="firstChannel"/>
+<int:channel id="secondChannel"/>
+<int:service-activator input-channel="firstChannel" output-channel="secondChannel" ref="serviceB"/>
+<int:service-activator input-channel="secondChannel" ref="serviceC"/>
+
+<!-- 2. Queue Channel -->
+<!-- defined poller to poll/consume messages -->
+<int:poller default="true" fixed-delay="20"/>
+<int:channel id="queueChannel">
+	<int:queue capacity="5"/>
+</int:channel>
+<int:service-activator input-channel="queueChannel" ref="queueChannelService"/>
+
+<!-- 3. Priority Channel -->
+<int:channel id="priorityChannel">
+	<!-- <int:priority-queue capacity="5" comparator="cityComparator"/> -->
+	<int:priority-queue capacity="5"/>
+</int:channel>
+<int:service-activator input-channel="priorityChannel" ref="priorityChannelService"/>
+<bean id="cityComparator" class="com.assign.utils.CityComparator"/>
+
+<!-- 4. Rendezvous Channel -->
+<int:channel id="rendezvousChannel">	
+	<int:rendezvous-queue/>
+</int:channel>
+<int:channel id="replyChannel">	
+	<int:rendezvous-queue/>
+</int:channel>
+<int:service-activator input-channel="rendezvousChannel" ref="rendezvousChannelService"/>
+</beans>
