@@ -13,6 +13,8 @@
 		directory="D:/source" channel="channel1">
 		<int:poller fixed-rate="1000" />
 	</int-file:inbound-channel-adapter>
+	
+	<int:service-activator input-channel="channel1" ref="fileHandlerService"></int:service-activator>
 
 	<!-- <int-stream:stdout-channel-adapter id="channel1" /> -->
 </beans>
