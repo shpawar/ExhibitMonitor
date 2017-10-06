@@ -1,0 +1,2 @@
+//com.springsource.sts.config.flow.coordinates\:http\://www.springframework.org/schema/integration\:/FileTransferSpringIntegrationExample/src/main/resources/beans.xml=<?xml version\="1.0" encoding\="UTF-8"?>\r\n<graph>\r\n<element clazz\="InboundChannelAdapterModelElement" type\="inbound-channel-adapter">\r\n<structure end\="1125" endstart\="1090" start\="956" startend\="1051"/>\r\n<bounds height\="118" width\="120" x\="19" y\="17"/>\r\n</element>\r\n</graph>
+eclipse.preferences.version=1
