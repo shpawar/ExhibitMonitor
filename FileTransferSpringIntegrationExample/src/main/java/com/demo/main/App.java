@@ -13,7 +13,7 @@ public class App
 	    	
 	    	/*GenericXmlApplicationContext context = new GenericXmlApplicationContext("beans.xml");*/
 
-	       /* context.registerShutdownHook();
+	       /*context.registerShutdownHook();
 
 	        SpringIntegrationUtils.displayDirectories(context);
 
